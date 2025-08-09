@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.2.0",
+    "@mongodb-js/zstd": "^2.0.0",
+    "@nuxt/image": "^1.9.0",
+    "@nuxtjs/google-gtag": "^1.0.4",
+    "@nuxtjs/robots": "^5.2.4",
+    "@nuxtjs/sitemap": "^7.2.6",
+    "@nuxtjs/tailwindcss": "^6.13.1",
+    "@nuxtjs/web-vitals": "^0.2.7",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-vue-next": "^0.479.0",
+    "mongoose": "^8.10.1",
+    "nodemailer": "^6.10.0",
+    "nuxt": "^3.16.1",
+    "vue-toastification": "^2.0.0-rc.5"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "start": "nuxt start"
+  },
+  "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.10.0",
+    "@nuxt/devtools": "^2.1.0"
+  }
+}
