@@ -1,6 +1,8 @@
 <script setup>
 import Testimonial from "~/components/Testimonial.vue";
 import Faq from "~/components/Faq.vue";
+import HeroPage from "~/components/HeroPage.vue";
+import LearningApproach from "~/components/LearningApproach.vue";
 </script>
 
 <template>

@@ -51,7 +51,6 @@
                 <h4 class="text-xl font-semibold text-[#1E2755]">
                   {{ testimonial.name }}
                 </h4>
-                <!-- <p class="text-gray-500">{{ testimonial.role }}</p> -->
               </div>
             </div>
           </div>
@@ -68,6 +67,50 @@
             d="M105.6 51.2 24 160v108.8h108.8V160H78.4l54.4-108.8zm190.4 0h-27.2L187.2 160v108.8H296V160h-54.4z"
           ></path>
         </svg>
+
+        <!-- Navigation Buttons -->
+        <div class="absolute inset-y-0 left-0 flex items-center">
+          <button
+            class="p-2 bg-gray-200/50 rounded-full"
+            @click="prevSlide"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-chevron-left"
+            >
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </button>
+        </div>
+        <div class="absolute inset-y-0 right-0 flex items-center">
+          <button
+            class="p-2 bg-gray-200/50 rounded-full"
+            @click="nextSlide"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-chevron-right"
+            >
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Decorative Dots Bottom Right -->
@@ -96,22 +139,41 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { useTestimonial } from "@/composables/useTestimonial";
 
-const { testimonialData, addTestimonial, loadTestimonial, updateTestimonial } =
-  useTestimonial();
-const testimonials = ref([]); // Initialize as an empty array
+const testimonials = ref([
+  {
+    name: "Tsega Tesfaye",
+    testimonial: "AFFORDABLE & HIGH-QUALITY! My daughter has been tutoring with A + Tutoring for over a year now. We have noticed such a difference. We get three one - on - one sessions a week for the same price that we got group tutoring at other franchises. She became more confident in school, in math, and in reading. We didn’t think the remote sessions would be helpful but we were so wrong. We love that they care for kids and their education. We’re so happy we tried them out!",
+  },
+  {
+    name: "Gebregwergs Kidanu",
+    testimonial: "I highly recommend A plus tutoring as a tutor for any child. They are patient, knowledgeable, and able to explain concepts in a way that my children understands. They are very flexible and willing to work with my children schedule. My children has made great progress in Maths since they started tutoring with Lina and Bitst. I am very grateful for your help!!!",
+  },
+  {
+    name: "Maedot Amha",
+    testimonial: "My younger cousins have been enrolled in this program and their grades have improved!!!",
+  },
+  {
+    name: "Rahel Teklemariam",
+    testimonial: "I really love this program. The tutors have helped my daughter so well, and she is progressing at a very fast pace. The tutors also take the time to teach and make sure that the kids understand. I definitely recommend!",
+  },
+  {
+    name: "Delina Woldu",
+    testimonial: "My sister’s teacher noticed progress within two months of tutoring. I’m pleased with the tutors. They identified the fact that every kid has their own style of learning and they meet the different requirements of children. Great variety of tutors, they’re patient and great with kids. It’s rewarding to see the progress they made with my sister and the price is👌🏽",
+  },
+]);
+
 const currentIndex = ref(0);
 let interval = null;
 
 const nextSlide = () => {
-  if (testimonials.value && testimonials.value.length > 0) {
+  if (testimonials.value.length > 0) {
     currentIndex.value = (currentIndex.value + 1) % testimonials.value.length;
   }
 };
 
 const prevSlide = () => {
-  if (testimonials.value && testimonials.value.length > 0) {
+  if (testimonials.value.length > 0) {
     currentIndex.value =
       (currentIndex.value - 1 + testimonials.value.length) %
       testimonials.value.length;
@@ -119,22 +181,17 @@ const prevSlide = () => {
 };
 
 const startAutoSlide = () => {
-  interval = setInterval(nextSlide, 5000);
+  if (testimonials.value.length > 0) {
+    interval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+  }
 };
 
-const stopAutoSlide = () => {
-  clearInterval(interval);
-};
-await loadTestimonial();
-testimonials.value = testimonialData.value;
-onMounted(async () => {
-  if (testimonials.value && testimonials.value.length > 0) {
-    startAutoSlide();
-  }
+onMounted(() => {
+  startAutoSlide();
 });
 
 onUnmounted(() => {
-  stopAutoSlide();
+  clearInterval(interval);
 });
 </script>
 

@@ -1,27 +1,27 @@
 import { Schema, model } from "mongoose";
 
-const pricingPlanSchema = new Schema({
+const pricingSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   price: {
     type: Number,
-    required: true
+    required: true,
   },
-   period: {
+  planType: {
     type: String,
-    enum: ['monthly', 'yearly'],
-    required: true
+    enum: ["monthly", "yearly"],
+    required: true,
   },
-  features: [{
-    type: String
-  }],
-  type: {
-    type: String,
-    enum: ['free', 'regular', 'extended'],
-    required: true
-  }
+  features: {
+    type: [String],
+    required: true,
+  },
+  isPopular: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-export const Pricing= model('PricingPlan', pricingPlanSchema);
+export const Pricing = model("Pricing", pricingSchema);

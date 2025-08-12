@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 export const useFaq = () => {
   const faqs = ref([]);
   const isLoading = ref(false);
@@ -6,9 +8,12 @@ export const useFaq = () => {
   const fetchFaqs = async () => {
     try {
       isLoading.value = true;
-      faqs.value = await $fetch("/api/admin/faqs");
+      const response = await $fetch("/api/admin/faqs");
+      // faqs.value = response;
+      return response; // <-- This is the key fix for useAsyncData compatibility
     } catch (err) {
       error.value = err.message || "Failed to load FAQs";
+      return [];
     } finally {
       isLoading.value = false;
     }
@@ -18,7 +23,6 @@ export const useFaq = () => {
     try {
       isLoading.value = true;
       await $fetch("/api/admin/faqs", { method: "POST", body: faq });
-      await fetchFaqs();
     } catch (err) {
       error.value = err.message || "Failed to add FAQ";
     } finally {
@@ -30,7 +34,6 @@ export const useFaq = () => {
     try {
       isLoading.value = true;
       await $fetch("/api/admin/faqs", { method: "PUT", body: faq });
-      await fetchFaqs();
     } catch (err) {
       error.value = err.message || "Failed to update FAQ";
     } finally {
@@ -42,7 +45,6 @@ export const useFaq = () => {
     try {
       isLoading.value = true;
       await $fetch("/api/admin/faqs", { method: "DELETE", body: { id } });
-      await fetchFaqs();
     } catch (err) {
       error.value = err.message || "Failed to delete FAQ";
     } finally {
@@ -50,5 +52,5 @@ export const useFaq = () => {
     }
   };
 
-  return { faqs, fetchFaqs, addFaq, updateFaq, deleteFaq, isLoading, error };
+  return { faqs, isLoading, error, fetchFaqs, addFaq, updateFaq, deleteFaq };
 };

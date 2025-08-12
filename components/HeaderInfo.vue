@@ -1,11 +1,9 @@
 <script setup>
 import { ref } from "vue";
-const info = ref({});
-
-const { contactInfo, isLoading, error, fetchContactInfo, updateContactInfo } =
-  useContact();
-await fetchContactInfo();
-info.value = contactInfo.value;
+const info = ref({
+  email: "admin@aplusmentors.com",
+  phone: "+1 (303) 720-6070"
+});
 </script>
 
 <template>

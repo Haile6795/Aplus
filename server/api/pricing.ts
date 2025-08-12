@@ -1,40 +1,24 @@
 import { Pricing } from "~/server/models/pricing.model";
 
 export default defineEventHandler(async (event) => {
-  const method = event.node.req.method;
-  console.log(method)
+  const method = event.req.method;
   const query = getQuery(event);
 
+  if (method === "GET") {
+    try {
+      const { planType } = query;
+      let filter = {};
 
-  switch (method) {
-    case "GET":
-      if (query.id) {
-        const plan = await Pricing.findById(query.id);
-        return plan || { error: "Pricing plan not found" };
-      } 
-      else {
-        const plans = await Pricing.find();
-        return plans;
+      if (planType && (planType === "monthly" || planType === "yearly")) {
+        filter = { planType: planType };
       }
 
-    // case "POST":
-    //   var body = await readBody(event);
-    //   return await Pricing.create(body);
-
-    // case "PUT":
-    //   var body = await readBody(event);
-
-    //   const { _id, ...updatedData } = body;
-    //   const updatedPlan = await Pricing.findByIdAndUpdate(_id, updatedData, { new: true });
-    //   return updatedPlan || { error: "Failed to update pricing plan" };
-
-    // case "DELETE":
-    //   var body = await readBody(event);
-    //   const { id: deleteId } = body;
-    //   const deletedPlan = await Pricing.findByIdAndDelete(deleteId);
-    //   return deletedPlan ? { success: true } : { error: "Failed to delete pricing plan" };
-
-    default:
-      throw createError({ statusCode: 405, statusMessage: "HTTP method is not allowed." });
+      const plans = await Pricing.find(filter);
+      return plans;
+    } catch (error) {
+      return { status: 500, message: "Error fetching pricing plans" };
+    }
   }
+
+  // Handle other methods (POST, PUT, DELETE) here if needed.
 });

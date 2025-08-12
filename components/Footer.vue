@@ -13,26 +13,23 @@
         </div>
 
         <!-- Social Media Icons -->
-        <div class="flex">
-          <div v-for="(_, platform) in socialsData.socialLinks">
-            <NuxtLink
-              v-if="socialsData.socialLinks[platform]"
-              :key="platform"
-              :to="socialsData.socialLinks[platform]"
-              :aria-label="platform"
-              class="bg-[#92A75A] mx-4 w-10 h-10 rounded-full bg-sage-500 flex items-center justify-center hover:bg-sage-600 transition-colors"
-            >
-              <i :class="getSocialIcon(platform)"></i>
-            </NuxtLink>
-          </div>
+        <div class="flex space-x-4">
+          <a
+            v-for="(link, platform) in socialLinks"
+            :key="platform"
+            :href="link"
+            :aria-label="platform"
+            class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-100 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i :class="getSocialIcon(platform)"></i>
+          </a>
         </div>
       </div>
       <hr class="bg-[#EAEEF3] opacity-15 my-5" />
       <!-- Middle Section -->
       <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-        <!-- Company Name -->
-        <div class="text-white text-xl font-semibold mb-4 md:mb-0">A plus</div>
-
         <!-- Navigation Links -->
         <nav class="flex flex-wrap justify-center gap-6">
           <NuxtLink
@@ -65,22 +62,23 @@
 <script setup>
 import { ref } from "vue";
 
-const { contactInfo, isLoading, error, fetchContactInfo } = useContact();
-const socialsData = ref({
-  socialLinks: {},
+const socialLinks = ref({
+  facebook: "#", // Add your Facebook link here
+  twitter: "#",  // Add your Twitter link here
+  linkedin: "#", // Add your LinkedIn link here
+  instagram: "#",// Add your Instagram link here
+  telegram: "#", // Add your Telegram link here
 });
-await fetchContactInfo();
-socialsData.value = contactInfo.value;
+
 const getSocialIcon = (platform) => {
   const icons = {
-    facebook: "fab fa-facebook text-[#1E2755]",
-    twitter: "fab fa-twitter text-[#1E2755]",
-    linkedin: "fab fa-linkedin text-[#1E2755]",
-    instagram: "fab fa-instagram text-[#1E2755]",
-    telegram: "fab fa-telegram  text-[#1E2755]",
-    tiktok: "fab fa-tiktok text-[#1E2755]",
+    facebook: "fab fa-facebook text-[#92a75a]",
+    twitter: "fab fa-twitter text-[#92a75a]",
+    linkedin: "fab fa-linkedin text-[#92a75a]",
+    instagram: "fab fa-instagram text-[#92a75a]",
+    telegram: "fab fa-telegram-plane text-[#92a75a]",
   };
-  return icons[platform];
+  return icons[platform] || "";
 };
 
 const links = ref([

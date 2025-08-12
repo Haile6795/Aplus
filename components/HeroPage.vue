@@ -1,27 +1,3 @@
-<script setup>
-import { ref } from "vue";
-const showModal = ref(false);
-const isModalOpen = ref(false);
-const modalSource = ref("");
-
-const info = ref({});
-
-const { contactInfo, isLoading, error, fetchContactInfo, updateContactInfo } =
-  useContact();
-
-await fetchContactInfo();
-info.value = contactInfo.value;
-
-const openModal = (source) => {
-  modalSource.value = source;
-  isModalOpen.value = true;
-};
-
-const closeModal = () => {
-  isModalOpen.value = false;
-};
-</script>
-
 <template>
   <div class="mb-20 bg-white">
     <div
@@ -62,7 +38,7 @@ const closeModal = () => {
             </button>
             <button
               class="flex items-center space-x-2 px-6 py-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
-              @click="showModal = true"
+              @click="openIntroVideoModal"
             >
               <svg
                 class="w-5 h-5 animate-pulse"
@@ -135,7 +111,7 @@ const closeModal = () => {
       @close="closeModal"
     />
     <div
-      v-if="showModal"
+      v-if="showIntroVideoModal"
       class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
     >
       <div class="bg-white rounded-lg overflow-hidden w-11/12 max-w-3xl">
@@ -144,7 +120,7 @@ const closeModal = () => {
           <h3 class="text-xl font-semibold">Watch Video</h3>
           <button
             class="text-gray-600 hover:text-gray-900"
-            @click="showModal = false"
+            @click="showIntroVideoModal = false"
           >
             ✕
           </button>
@@ -153,9 +129,8 @@ const closeModal = () => {
         <!-- Modal Body (Video) -->
         <div class="p-4">
           <iframe
-            class="w-full aspect-video"
-            v-if="info"
-            :src="info.introVideo"
+            class="w-full aspect-video shadow-none border-0"
+            :src="introVideoEmbedUrl"
             title="Video"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -166,3 +141,35 @@ const closeModal = () => {
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, computed } from "vue";
+import ConsultationModal from "~/components/ConsultationModal.vue";
+
+const introVideoUrl = 'https://youtu.be/vrU6YJle6Q4'; // The YouTube video URL
+const introVideoEmbedUrl = `https://www.youtube.com/embed/${getYouTubeVideoId(introVideoUrl)}`;
+
+const showIntroVideoModal = ref(false);
+const isModalOpen = ref(false);
+const modalSource = ref("");
+
+const openModal = (source) => {
+  modalSource.value = source;
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+};
+
+const openIntroVideoModal = () => {
+  showIntroVideoModal.value = true;
+};
+
+// Function to extract YouTube video ID
+function getYouTubeVideoId(url) {
+  if (!url) return null;
+  const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
+</script>

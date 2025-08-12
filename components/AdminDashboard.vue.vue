@@ -1,4 +1,4 @@
-// AdminDashboard.vue
+<!-- // AdminDashboard.vue -->
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Admin Navigation -->

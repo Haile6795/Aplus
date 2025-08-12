@@ -5,8 +5,8 @@ import { useAdmin } from "@/composables/useAdmin";
 const { admins, loadAdmins, registerAdmin, updateAdmin, deleteAdmin } =
   useAdmin();
 
-const newUsername = ref("");
-const newPassword = ref("");
+const newUsername = ref("admin");
+const newPassword = ref("12345");
 const editUsername = ref("");
 const editPassword = ref("");
 const editingAdminId = ref(null);
@@ -18,6 +18,7 @@ const register = async () => {
   await registerAdmin(newUsername.value, newPassword.value);
   newUsername.value = "";
   newPassword.value = "";
+  await loadAdmins();
 };
 
 const startEdit = (admin) => {
@@ -35,6 +36,12 @@ const update = async () => {
   );
   editingAdminId.value = null;
   showEditModal.value = false;
+  await loadAdmins();
+};
+
+const removeAdmin = async (id) => {
+  await deleteAdmin(id);
+  await loadAdmins();
 };
 </script>
 
@@ -101,7 +108,7 @@ const update = async () => {
                   </svg>
                 </button>
                 <button
-                  @click="deleteAdmin(admin._id)"
+                  @click="removeAdmin(admin._id)"
                   class="p-2 rounded-md bg-red-500 hover:bg-red-600 transition"
                 >
                   <svg

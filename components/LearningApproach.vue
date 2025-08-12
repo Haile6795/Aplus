@@ -10,18 +10,9 @@
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Video Section -->
       <div
-        v-if="!info.podcastVideo"
-        class="text-center py-12 flex flex-col items-center justify-center"
-      >
-        <div
-          style="width: 84px; height: 84px"
-          class="animate-spin rounded-full border-b-2 border-[#92A75A] mx-auto"
-        ></div>
-      </div>
-      <div
-        v-else="info.podcastVideo"
-        class="relative rounded-xl overflow-hidden cursor-pointer"
+        class="relative rounded-xl overflow-hidden cursor-pointer block"
         @click="openModal"
       >
         <div class="aspect-w-16 aspect-h-9 relative">
@@ -38,15 +29,11 @@
               </svg>
             </button>
           </div>
-          <iframe
-            class="w-full aspect-video"
-            v-if="info"
-            :src="info.podcastVideo"
-            title="Video"
-            frameborder="0"
-            allow="accelerometer;  clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
+          <img 
+            :src="videoThumbnail" 
+            alt="Video Thumbnail" 
+            class="w-full h-full object-cover"
+          />
         </div>
         <div class="py-4 bg-white">
           <p class="text-[#2E3E5C]"></p>
@@ -57,7 +44,7 @@
           </p>
         </div>
       </div>
-
+      
       <!-- Features Grid -->
       <div class="grid grid-cols-2 gap-3">
         <div v-for="feature in features" :key="feature.title" class="bg-white">
@@ -72,6 +59,8 @@
         </div>
       </div>
     </div>
+    
+    <!-- Modal for video playback -->
     <Teleport to="body">
       <div
         v-if="isModalOpen"
@@ -86,15 +75,16 @@
           >
             ✕
           </button>
-          <iframe
-            class="w-full aspect-video mt-5"
-            v-if="info"
-            :src="info.podcastVideo"
-            title="Video"
-            frameborder="0"
-            allow="accelerometer;  autoplay;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
+          <div class="aspect-w-16 aspect-h-9 w-full">
+            <iframe
+              class="w-full h-full shadow-none border-0"
+              :src="videoEmbedUrl"
+              title="Video"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
         </div>
       </div>
     </Teleport>
@@ -103,18 +93,20 @@
 
 <script setup>
 import { ref } from "vue";
-const { contactInfo, isLoading, error, fetchContactInfo, updateContactInfo } =
-  useContact();
-const info = ref("");
+
 const isModalOpen = ref(false);
-await fetchContactInfo();
-info.value = contactInfo.value;
+const videoId = 'vrU6YJle6Q4';
+const videoEmbedUrl = `https://www.youtube.com/embed/${videoId}`;
+const videoThumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
 const openModal = () => {
   isModalOpen.value = true;
 };
+
 const closeModal = () => {
   isModalOpen.value = false;
 };
+
 const features = [
   { title: "Customized Lesson Plans", img: "/customizedLessonplans.png" },
   { title: "Experienced Tutors", img: "/expiriencedtutors.png" },

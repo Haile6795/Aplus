@@ -58,7 +58,7 @@ const handleSubmit = async () => {
   </NuxtLayout>
 </template>
 
-<style>
+<style scoped>
 body {
   font-family: "Inter", sans-serif;
 }
